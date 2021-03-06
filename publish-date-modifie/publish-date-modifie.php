@@ -13,10 +13,10 @@ $day = isset($_GET['day']) ? (int) $_GET['day'] : 0;
 
 
 //开始的时间
-$start_date = '2017-01-02';
+$start_date = '2014-10-9';
 
 //每天的文章数量
-$posts_per_day = 15;
+$posts_per_day = 20;
 
 
 $starttime = strtotime($start_date);
@@ -28,15 +28,16 @@ for($i = 0; $i < $posts_per_day; $i++){
     $mtime = strtotime("+$day days $seconds seconds", $starttime);
     $datetime = date('Y-m-d H:i:s', $mtime);
     $modifiedtime = date('Y-m-d H:i:s', $mtime + rand(0, 36000));
-    $dmdb->query("update ##_posts set post_date = '$datetime', post_modified = '$modifiedtime' where ID = $id");
+    $dmdb->query("update $dmdb->posts set post_date = '$datetime', post_modified = '$modifiedtime' where ID = $id");
 }
 
 
 $day++;
-$isexists = $dmdb->get_var('select post_title from ##_posts where ID = '.$id);
+$isexists = $dmdb->get_var("select post_title from $dmdb->posts where ID = $id");
 
 if($isexists){
-    echo sprintf("<meta http-equiv='Refresh' content='0,url=./modifie.php ?day=%d'><br/>更新第%d天", $day, $day);
+    header('Cache-Control:no-cache');
+    echo sprintf("<meta http-equiv='Refresh' content='0,url=./mdif_date.php?day=%d'><br/>更新第%d天", $day, $day);
 
 }else{
     echo '更新完成';
