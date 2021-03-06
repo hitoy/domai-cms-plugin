@@ -35,10 +35,9 @@ for($i = 0; $i < $posts_per_day; $i++){
 $day++;
 $isexists = $dmdb->get_var("select post_title from $dmdb->posts where ID = $id");
 
+header('Cache-Control:no-cache');
 if($isexists){
-    header('Cache-Control:no-cache');
     echo sprintf("<meta http-equiv='Refresh' content='0,url=./%s?day=%d'><br/>更新第%d天", $_SERVER['SCRIPT_NAME'], $day, $day);
-
 }else{
     echo '更新完成';
 }
